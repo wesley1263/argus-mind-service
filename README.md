@@ -50,10 +50,11 @@ Read the full story in [`docs/vision.md`](docs/vision.md) and
 
 ## Repository Status
 
-This repository has completed three foundation phases — governance (**Phase 1**), reusable
-development assets (**Phase 2**), and the automation layer's specification (**Phase 3**). There is
-still deliberately **no application code, no API, and no business logic**: every deliverable so far
-is markdown — specs, skills, prompts, templates, and workflow specifications an implementation
+This repository has completed four foundation phases — governance (**Phase 1**), reusable
+development assets (**Phase 2**), the automation layer's specification (**Phase 3**), and the
+domain knowledge base (**Phase 4**). There is still deliberately **no application code, no API, and
+no business logic**: every deliverable so far is markdown — specs, skills, prompts, templates,
+workflow specifications, and the learning-science/domain-model knowledge base an implementation
 phase will build from. See [`docs/repository-structure.md`](docs/repository-structure.md) for
 exactly what exists today versus what's planned, and why that order matters for a codebase built
 largely by AI coding agents across many sessions.
@@ -64,7 +65,8 @@ largely by AI coding agents across many sessions.
 argus-mind-service/
 ├── .ai/            Binding rules for humans and AI agents: constitution, architecture,
 │                    coding philosophy, development process, review checklist, definition of done.
-├── docs/           Human-facing documentation: vision, architecture overview, workflow, structure.
+├── docs/           Human-facing documentation, including domain/, pedagogy/, domain-model/,
+│                    domain-rules/, prompt-engineering/, golden-dataset/, evaluation/, future/.
 ├── glossary/       The ubiquitous language — one precise definition per business term.
 ├── adr/            Architecture Decision Records — why irreversible decisions were made.
 ├── specs/          Feature specifications, following a fixed template.
@@ -108,6 +110,9 @@ implementation phase begins.
 | Start a new feature | [`specs/README.md`](specs/README.md) via [`prompts/generate-specification.md`](prompts/generate-specification.md) |
 | Learn a technology's project-specific conventions | [`skills/README.md`](skills/README.md) |
 | See how CI, quality gates, and deployment are specified | [`automation/README.md`](automation/README.md) |
+| Understand *why* the product works the way it does | [`docs/domain/README.md`](docs/domain/README.md) and [`docs/domain-principles.md`](docs/domain-principles.md) |
+| Learn the learning-science principles behind a feature | [`docs/pedagogy/README.md`](docs/pedagogy/README.md) |
+| Design or review a generative prompt | [`docs/prompt-engineering/README.md`](docs/prompt-engineering/README.md) |
 | Make a change | [`docs/development-workflow.md`](docs/development-workflow.md) |
 | Know the rules that bind every change | [`.ai/constitution.md`](.ai/constitution.md) |
 
@@ -125,9 +130,16 @@ implementation phase begins.
 - [`automation/`](automation), [`.github/`](.github) — the automation layer's specification
   (Phase 3): every CI workflow, quality gate, and deployment strategy, written as markdown precise
   enough to implement from directly.
+- [`docs/domain/`](docs/domain), [`docs/pedagogy/`](docs/pedagogy),
+  [`docs/domain-model/`](docs/domain-model), [`docs/domain-rules/`](docs/domain-rules),
+  [`docs/prompt-engineering/`](docs/prompt-engineering), [`docs/golden-dataset/`](docs/golden-dataset),
+  [`docs/evaluation/`](docs/evaluation), [`docs/future/`](docs/future),
+  [`docs/domain-principles.md`](docs/domain-principles.md) — the domain knowledge base (Phase 4):
+  the learning science, domain model, business rules, and prompt design guides behind every Engine.
 
-If any of the above ever disagree with each other, `.ai/` is canonical — each other document says
-so explicitly at the top.
+If any of the above ever disagree with each other, `.ai/` is canonical for engineering rules and
+`docs/domain-principles.md` is canonical for pedagogical ones — each other document says so
+explicitly at the top.
 
 ## Contributing
 

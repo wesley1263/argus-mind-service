@@ -10,6 +10,12 @@ Terms are grouped by which Engine owns them (see `/.ai/architecture.md` §2 for 
 table), because ownership and meaning are tied together: only the owning Engine may change how a
 term is represented internally. An alphabetical index follows for quick lookup.
 
+Every term below has a one-paragraph, canonical definition — that's what makes this document safe
+to use as law (Article VI). For attributes, relationships, lifecycle notes, and worked examples,
+see the companion `/docs/domain-model/` folder, organized by the same Engine groupings; if this
+glossary and `/docs/domain-model/` ever disagree, this glossary wins and the other document is
+stale and must be fixed.
+
 ---
 
 ## Cross-Cutting Terms
@@ -60,7 +66,21 @@ The smallest unit of text the Ingestion Engine produces for its own internal pro
 embedding or extraction). Chunk is **owned exclusively by the Ingestion Engine** and must never
 appear in another Engine's model, in a published contract, in an API response, or anywhere a
 Student could see it. Its size and shape are free to change as ingestion technique evolves,
-precisely because nothing outside Ingestion Engine depends on it. See ADR-002.
+precisely because nothing outside Ingestion Engine depends on it. See ADR-002. Not to be confused
+with **Chunking**, the cognitive-science principle (`/docs/pedagogy/chunking.md`) — related in
+spirit, never in implementation.
+
+### OCRResult *(internal only)*
+The text extracted from a scanned or image-based Document page by optical character recognition,
+before it is split into Chunks. Owned exclusively by the Ingestion Engine, for the same reason as
+Chunk: its shape is a function of the OCR technique used, not a business concept. See
+`/docs/domain-model/ingestion-entities.md`.
+
+### Embedding *(internal only)*
+A vector representation of a Chunk or Topic, used internally by the Ingestion Engine for
+similarity-based processing. Owned exclusively by the Ingestion Engine — publishing it would
+hard-couple every consumer to whichever model produced it, contradicting Article I of the
+Constitution. See `/docs/domain-model/ingestion-entities.md`.
 
 ---
 
@@ -81,7 +101,14 @@ graph rather than a flat list.
 ### Knowledge Graph
 The full directed graph of Learning Nodes connected by Knowledge Edges, maintained by the Knowledge
 Engine from ingested material. Represents the structure of everything the platform currently
-understands it's possible to know, for a given body of Documents.
+understands it's possible to know, for a given body of Documents. Never personalized per Student —
+see Learning Path below for the Student-specific view.
+
+### Learning Path
+A Student-specific, dynamically computed sequence or subset of Learning Nodes representing the
+platform's current recommendation for what that Student should engage with next. Always a derived
+projection over the Knowledge Graph and Learning State — like Learning State itself, never stored
+or treated as an independent source of truth. See `/docs/domain-model/knowledge-entities.md`.
 
 ---
 
@@ -89,10 +116,11 @@ understands it's possible to know, for a given body of Documents.
 
 Captures what actually happened during a Student's Session, as immutable fact.
 
-### Session
+### Session *(a.k.a. Study Session)*
 A bounded period of interaction between a Student and the platform — it has a start, an end, and
 exactly one Student. Evidence is generated during a Session, and Validated Generation Task output
-is delivered within one.
+is delivered within one. "Study Session" is the same entity, referred to by that name in product
+and pedagogy contexts (`/docs/domain/study-session.md`) — there is one entity, not two.
 
 ### Evidence
 An immutable, timestamped observation of a Student's interaction or performance with respect to one
@@ -100,6 +128,12 @@ or more Learning Nodes (an answer submitted, a self-assessment, time spent, a hi
 Evidence is the only input the Learning State Engine trusts, and once written it is never edited or
 deleted — a correction is new Evidence, never a change to old Evidence. See ADR-003 and Article IV
 of the Constitution.
+
+### EvidenceType
+The classification of what kind of observation an Evidence record represents (e.g., an answer
+submitted, a self-explanation, a self-reported confidence, a hint request, time on task). Different
+EvidenceTypes may be weighted differently by the Learning State Engine's confidence model. See
+`/docs/domain-model/evidence-entities.md` for the full taxonomy.
 
 ---
 
@@ -143,27 +177,94 @@ must pass before it may reach a Student. Validation is an explicit, auditable st
 pass/fail outcome — not an inline check inside generation — and a failed Validation always produces
 a fallback or a retry, never a silent bypass. See ADR-005 and Article V of the Constitution.
 
+### Difficulty
+A value describing how demanding a piece of content is, calibrated relative to a Student's current
+Confidence for the target Learning Node — not a fixed, learner-independent scale. See
+`/docs/pedagogy/desirable-difficulties.md`.
+
+### PromptContext
+The structured, typed input assembled for a Generation Task's underlying model call: the target
+Learning Node, its real Knowledge Edges, the Student's Confidence, and the requested content
+type/Difficulty/Bloom's level. Never raw Chunk data. See
+`/docs/domain-model/generation-entities.md`.
+
+### Feedback
+The response shown to a Student after they engage with content, in reply to a specific piece of
+Evidence. Distinct from Evidence itself (the observation) and from Validation (the pre-delivery
+gate). See `/docs/domain-rules/README.md`'s "the child is never blamed."
+
+### Reinforcement
+A Generation Task specifically targeted at a low-Confidence Learning Node, produced in response to
+struggle signals rather than ordinary forward progression. See `/docs/domain-rules/README.md`'s
+"only problematic Learning Nodes are regenerated."
+
+### AdaptiveContent
+The Student-facing umbrella term for anything Generation Engine produces — MindMap, Summary, Game,
+Quiz, and Reinforcement are all kinds of AdaptiveContent. Used in product copy and cross-content
+reporting; engineering code uses the specific content type once it's known.
+
+### MindMap
+A content type representing Knowledge Graph structure spatially. Its structure must correspond to
+real Knowledge Edges. See `/docs/pedagogy/dual-coding.md`.
+
+### Summary
+A content type covering a Learning Node or Topic in prose, most valuable when it requires Student
+generation rather than passive reading. See `/docs/pedagogy/generation-effect.md`.
+
+### Game
+A lightweight, engagement-optimized content type. See `/docs/domain-principles.md` §10 ("fun
+creates habit").
+
+### Quiz
+A content type that is the primary vehicle for Retrieval Practice and Active Recall. See
+`/docs/pedagogy/retrieval-practice.md`.
+
+### SessionPlan
+The ordered sequence of Generation Tasks intended for one Session, encoding pacing and format
+variety. Advisory — actual delivery adapts per Student response. See
+`/docs/domain/study-session.md`.
+
+### ChapterPlan
+A longer-horizon planning artifact sequencing a Chapter's Learning Nodes across multiple future
+Sessions, personalized per Student via Learning Path. See
+`/docs/domain-model/generation-entities.md`.
+
 ---
 
 ## Alphabetical Index
 
 | Term | Owning Engine |
 |---|---|
+| [AdaptiveContent](#adaptivecontent) | Generation Engine |
 | [Adaptive Loop](#adaptive-loop) | — (cross-cutting) |
 | [Chapter](#chapter) | Ingestion Engine |
+| [ChapterPlan](#chapterplan) | Generation Engine |
 | [Chunk](#chunk-internal-only) *(internal only)* | Ingestion Engine |
 | [Confidence](#confidence) | Learning State Engine |
+| [Difficulty](#difficulty) | Generation Engine |
 | [Document](#document) | Ingestion Engine |
+| [Embedding](#embedding-internal-only) *(internal only)* | Ingestion Engine |
 | [Engine](#engine) | — (cross-cutting) |
 | [Evidence](#evidence) | Evidence Engine |
+| [EvidenceType](#evidencetype) | Evidence Engine |
+| [Feedback](#feedback) | Generation Engine |
+| [Game](#game) | Generation Engine |
 | [Generation Task](#generation-task) | Generation Engine |
 | [Knowledge Edge](#knowledge-edge) | Knowledge Engine |
 | [Knowledge Graph](#knowledge-graph) | Knowledge Engine |
 | [Learning Node](#learning-node) | Knowledge Engine |
+| [Learning Path](#learning-path) | Knowledge Engine |
 | [Learning State](#learning-state) | Learning State Engine |
 | [Mastery](#mastery-informal) *(informal)* | Learning State Engine |
-| [Session](#session) | Evidence Engine |
+| [MindMap](#mindmap) | Generation Engine |
+| [OCRResult](#ocrresult-internal-only) *(internal only)* | Ingestion Engine |
+| [PromptContext](#promptcontext) | Generation Engine |
+| [Quiz](#quiz) | Generation Engine |
+| [Reinforcement](#reinforcement) | Generation Engine |
+| [Session](#session-aka-study-session) *(a.k.a. Study Session)* | Evidence Engine |
+| [SessionPlan](#sessionplan) | Generation Engine |
 | [Student](#student) | — (cross-cutting) |
+| [Summary](#summary) | Generation Engine |
 | [Topic](#topic) | Ingestion Engine |
 | [Validation](#validation) | Generation Engine |
 

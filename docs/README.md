@@ -11,6 +11,23 @@ overlap and ever disagree, `/.ai/` is canonical (see each document's header note
 | [`development-workflow.md`](development-workflow.md) | How a change moves from idea to merge. |
 | [`repository-structure.md`](repository-structure.md) | What exists in this repository today, and what the planned code layout will look like. |
 | [`engineering-principles.md`](engineering-principles.md) | The ten-principle distillation of "how we build here." |
+| [`domain-principles.md`](domain-principles.md) | The permanent, pedagogical counterpart to `.ai/constitution.md` — thirteen non-negotiable learning principles. |
+
+## Domain Intelligence (Phase 4)
+
+The knowledge base behind *why* the product works, not just how it's engineered — required reading
+before implementing anything in Knowledge Engine, Learning State Engine, or Generation Engine.
+
+| Folder | Covers |
+|---|---|
+| [`domain/`](domain/README.md) | Pedagogical rationale for each Engine, the Core Product Thesis, and the Student journey end to end. |
+| [`pedagogy/`](pedagogy/README.md) | Fifteen learning-science principles, each with evidence and engineering/product/prompt implications. |
+| [`domain-model/`](domain-model/README.md) | The full entity catalog — companion to `/glossary/README.md`, with attributes and relationships. |
+| [`domain-rules/README.md`](domain-rules/README.md) | Business rules with business, pedagogical, and engineering justification for each. |
+| [`prompt-engineering/`](prompt-engineering/README.md) | Design guides for every generative prompt in the platform. |
+| [`golden-dataset/`](golden-dataset/README.md) | The structure and evaluation methodology behind `/testing/golden-dataset.md`. |
+| [`evaluation/`](evaluation/README.md) | How the *product* is measured — learning outcomes, never the LLM. |
+| [`future/`](future/README.md) | Deliberately deferred capabilities and their prerequisites. |
 
 ## Related, Outside This Folder
 

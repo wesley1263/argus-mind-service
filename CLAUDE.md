@@ -4,10 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Status
 
-`argus-mind-service` is the adaptive-learning core of Smart App. Three foundation phases are
+`argus-mind-service` is the adaptive-learning core of Smart App. Four foundation phases are
 complete — governance (`.ai/`, `docs/`, `glossary/`, `adr/`), reusable development assets (`specs/`,
-`skills/`, `prompts/`, `templates/`, `testing/`), and the automation layer's specification
-(`automation/`, `.github/`). There is still **no application code, no `src/`, no `tests/`, no
+`skills/`, `prompts/`, `templates/`, `testing/`), the automation layer's specification
+(`automation/`, `.github/`), and the domain knowledge base (`docs/domain-principles.md`,
+`docs/domain/`, `docs/pedagogy/`, `docs/domain-model/`, `docs/domain-rules/`,
+`docs/prompt-engineering/`, `docs/golden-dataset/`, `docs/evaluation/`, `docs/future/`). There is
+still **no application code, no `src/`, no `tests/`, no
 Docker/Compose setup, and no `CHANGELOG.md` yet** — everything so far is markdown, including the CI
 workflows under `automation/github-actions/` and `automation/workflows/`, which are precise
 specifications, not runnable `.yml` files (`automation/README.md` explains why). The first
@@ -102,7 +105,10 @@ and `.ai/coding-philosophy.md`.
 
 Key reference docs, in the order a new task typically needs them: `.ai/constitution.md` →
 `.ai/architecture.md` → `glossary/README.md` → relevant `adr/ADR-*.md` →
-`.ai/coding-philosophy.md` → `.ai/definition-of-done.md` / `.ai/review-checklist.md`.
+`.ai/coding-philosophy.md` → `.ai/definition-of-done.md` / `.ai/review-checklist.md`. For anything
+touching Knowledge Engine, Learning State Engine, or Generation Engine specifically, also read
+`docs/domain-principles.md` and the relevant `docs/domain/*.md` document first — see the Domain
+Knowledge Base section below.
 
 ## Reusable Development Assets (Phase 2)
 
@@ -149,3 +155,38 @@ specifically so an implementation task doesn't re-derive conventions from scratc
 When implementation begins, translating an `automation/github-actions/*.md` spec into a real
 `.github/workflows/*.yml` file is a mechanical task — the spec already states trigger, steps, gate,
 secrets, and failure behavior precisely enough to implement from directly.
+
+## Domain Knowledge Base (Phase 4)
+
+The pedagogical and product reasoning behind every Engine — read before implementing anything in
+Knowledge Engine, Learning State Engine, or Generation Engine, since their correctness is defined
+partly in learning-science terms, not just engineering terms:
+
+- `docs/domain-principles.md` — the permanent, pedagogical counterpart to `.ai/constitution.md`.
+  Thirteen non-negotiable principles (e.g., "Evidence Over Assumptions," "The System Never Judges
+  Learning") that a technically correct change can still violate.
+- `docs/domain/` — why each Engine exists pedagogically, and the end-to-end Student journey.
+- `docs/pedagogy/` — fifteen learning-science principles (Active Recall, Spaced Repetition,
+  Cognitive Load Theory, etc.), each with its evidence base and concrete engineering/product/prompt
+  implications. Two disambiguations worth knowing up front: `docs/pedagogy/chunking.md` (the
+  cognitive principle) is **not** the same as Ingestion Engine's internal `Chunk` (ADR-002); Active
+  Recall and Retrieval Practice are related but distinct (cognitive act vs. pedagogical strategy).
+- `docs/domain-model/` — the full entity catalog (attributes, relationships, lifecycle), companion
+  to `glossary/README.md`. This phase significantly expanded the glossary itself — check
+  `glossary/README.md` for current terms (e.g., `EvidenceType`, `Difficulty`, `PromptContext`,
+  `SessionPlan`, `ChapterPlan`, `MindMap`, `Summary`, `Game`, `Quiz`, `Reinforcement`,
+  `AdaptiveContent`, `Learning Path`) before assuming only the five-Engine-era terms exist.
+- `docs/domain-rules/README.md` — business rules (e.g., "Confidence Is Never Binary," "False
+  Negatives Are Worse Than False Positives," "The Child Is Never Blamed") each with business,
+  pedagogical, and engineering justification — check this before implementing anything that touches
+  Confidence, Feedback, or regeneration logic.
+- `docs/prompt-engineering/` — a design guide per generative prompt in the platform, plus the shared
+  review checklist, versioning strategy, regression strategy, and evaluation metrics. Critically:
+  `docs/prompt-engineering/learning-state-prompt.md` and `evidence-engine-prompt.md` establish that
+  **no prompt ever directly sets Confidence or Evidence's judgment** — a prompt produces a
+  structured signal; deterministic code (per ADR-004) converts it.
+- `docs/golden-dataset/` and `docs/evaluation/` — the content/structure behind `testing/golden-dataset.md`,
+  and how the *product* (not the LLM) is evaluated — see `docs/evaluation/README.md`'s explicit
+  metric list before adding any new success metric.
+- `docs/future/` — deliberately deferred capabilities; do not implement anything here without a spec
+  first (Article VIII).
