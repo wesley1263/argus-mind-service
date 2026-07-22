@@ -20,6 +20,17 @@ and `test` services, per `skills/docker.md`), the `src/` and `tests/` trees, the
 `CHANGELOG.md` in Keep a Changelog format — do not assume any of these already exist without
 checking.
 
+## Mandatory: Start Every Task With Project Conductor
+
+Before any task in this repository — implementation, planning, or investigation — invoke the
+`project-conductor` subagent first (`.claude/agents/project-conductor.md`). It scopes the request as
+a small vertical slice, selects only the documentation/ADRs/specs actually relevant to it, and
+recommends which specialist subagents (see Subagent Roster below) should handle each stage. It never
+writes code and never redesigns architecture — it coordinates. Do not skip straight to
+implementation even for a request that looks small; Project Conductor's increment rules (small,
+testable, observable, deployable, independent, reversible) are what catch an over-scoped or
+premature request before any code exists.
+
 ## Commands
 
 - Dependency management: `poetry install` (Python `>=3.14`, no dependencies declared yet — see
@@ -48,6 +59,32 @@ Every change follows this exact sequence — do not skip or reorder steps:
 This lifecycle is layered on top of, not a replacement for, the repo's own Spec-Driven Development
 process (see Architecture below): Spec → (ADR, if irreversible/cross-Engine) → Plan → Implement
 (red/green) → Definition of Done → Review → Merge.
+
+## Subagent Roster
+
+Nine subagents live in `.claude/agents/` and form the pipeline that actually executes the workflow
+above and the Spec-Driven Development lifecycle in `.ai/development-principles.md`. Each agent's own
+file states its full read list, constraints, and stop conditions in detail — this table is only the
+order and role, so it doesn't drift out of sync with them.
+
+| Order | Agent | Role | Produces code? |
+|---|---|---|---|
+| 0 | `project-conductor` | Scopes the increment, selects context, assigns specialists (invoked first, always) | No |
+| 1 | `architecture-reviewer` | Confirms architectural understanding before any planning begins | No |
+| 2 | `sprint-planner` | Turns an Approved spec into a task breakdown (each task < 2 hours) | No |
+| 3 | `domain-reviewer` | Checks the plan against `docs/domain/`, `docs/pedagogy/`, and Domain Rules | No |
+| 4 | `backend-engineer` | Implements one sprint task — the actual Branch/Red/Green work | Yes |
+| 5 | `code-reviewer` | Reviews the implementation for architecture, quality, security | No |
+| 6 | `qa-engineer` | Validates against Acceptance Criteria; runs the test suite | No (runs tests) |
+| 7 | `documentation-engineer` | Synchronizes docs, diagrams, and spec status after approval | Docs only |
+| 8 | `release-manager` | Final merge gate: lint, test, coverage, security, changelog, version | No |
+
+This is how the Mandatory Development Workflow's steps map to named responsible parties:
+`backend-engineer` performs Branch → Red → Green; `code-reviewer` and `qa-engineer` are the review
+and validation step; `documentation-engineer` and `release-manager` cover Changelog and the final
+Pre-commit/merge gate. A request that looks like it can skip straight to `backend-engineer` still
+starts with `project-conductor` — it decides whether the earlier stages are actually needed for a
+given task's size and risk, rather than skipping them by default.
 
 ## Architecture
 
