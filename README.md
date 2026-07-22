@@ -50,25 +50,34 @@ Read the full story in [`docs/vision.md`](docs/vision.md) and
 
 ## Repository Status
 
-This repository is currently in **Phase 1 — Foundation**: the engineering governance,
-specification, and architecture layer only. There is deliberately no application code, no API, and
-no business logic yet — see [`docs/repository-structure.md`](docs/repository-structure.md) for
-exactly what exists today versus what is planned for the implementation phase, and why that order
-matters for a codebase built largely by AI coding agents across many sessions.
+This repository has completed three foundation phases — governance (**Phase 1**), reusable
+development assets (**Phase 2**), and the automation layer's specification (**Phase 3**). There is
+still deliberately **no application code, no API, and no business logic**: every deliverable so far
+is markdown — specs, skills, prompts, templates, and workflow specifications an implementation
+phase will build from. See [`docs/repository-structure.md`](docs/repository-structure.md) for
+exactly what exists today versus what's planned, and why that order matters for a codebase built
+largely by AI coding agents across many sessions.
 
 ## Repository Layout
 
 ```
 argus-mind-service/
-├── .ai/         Binding rules for humans and AI agents: constitution, architecture,
-│                 coding philosophy, development process, review checklist, definition of done.
-├── docs/        Human-facing documentation: vision, architecture overview, workflow, structure.
-├── glossary/    The ubiquitous language — one precise definition per business term.
-├── adr/         Architecture Decision Records — why irreversible decisions were made.
-├── src/         (planned) Application code, once the implementation phase begins.
-├── tests/       (planned) Unit, integration, and contract tests.
+├── .ai/            Binding rules for humans and AI agents: constitution, architecture,
+│                    coding philosophy, development process, review checklist, definition of done.
+├── docs/           Human-facing documentation: vision, architecture overview, workflow, structure.
+├── glossary/       The ubiquitous language — one precise definition per business term.
+├── adr/            Architecture Decision Records — why irreversible decisions were made.
+├── specs/          Feature specifications, following a fixed template.
+├── skills/         How development should happen, per technology/discipline.
+├── prompts/        Reusable, ready-to-use prompts for common tasks.
+├── templates/      Lightweight templates for planning artifacts.
+├── testing/        The testing strategy — unit through prompt evaluation.
+├── automation/     Specifications for CI, quality gates, and the deployment pipeline.
+├── .github/        Real, functional PR and issue templates.
+├── src/            (planned) Application code, once the implementation phase begins.
+├── tests/          (planned) Unit, integration, and contract tests.
 ├── pyproject.toml
-└── README.md    This file.
+└── README.md       This file.
 ```
 
 See [`docs/repository-structure.md`](docs/repository-structure.md) for the full tree, an
@@ -96,6 +105,9 @@ implementation phase begins.
 | Understand how it's structured | [`docs/architecture-overview.md`](docs/architecture-overview.md) |
 | Learn the precise meaning of a term | [`glossary/README.md`](glossary/README.md) |
 | Understand *why* a decision was made | [`adr/README.md`](adr/README.md) |
+| Start a new feature | [`specs/README.md`](specs/README.md) via [`prompts/generate-specification.md`](prompts/generate-specification.md) |
+| Learn a technology's project-specific conventions | [`skills/README.md`](skills/README.md) |
+| See how CI, quality gates, and deployment are specified | [`automation/README.md`](automation/README.md) |
 | Make a change | [`docs/development-workflow.md`](docs/development-workflow.md) |
 | Know the rules that bind every change | [`.ai/constitution.md`](.ai/constitution.md) |
 
@@ -107,9 +119,15 @@ implementation phase begins.
 - [`glossary/`](glossary) — the ubiquitous language: one precise definition per business term, used
   identically everywhere.
 - [`adr/`](adr) — the record of why the architecture's irreversible decisions were made.
+- [`specs/`](specs), [`skills/`](skills), [`prompts/`](prompts), [`templates/`](templates),
+  [`testing/`](testing) — the reusable development assets (Phase 2) an AI agent or engineer draws on
+  while implementing a spec.
+- [`automation/`](automation), [`.github/`](.github) — the automation layer's specification
+  (Phase 3): every CI workflow, quality gate, and deployment strategy, written as markdown precise
+  enough to implement from directly.
 
-If any of the above ever disagree with each other, `.ai/` is canonical — each `docs/` page says so
-explicitly at the top.
+If any of the above ever disagree with each other, `.ai/` is canonical — each other document says
+so explicitly at the top.
 
 ## Contributing
 

@@ -4,13 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Status
 
-`argus-mind-service` is the adaptive-learning core of Smart App. The repository is currently in
-**Phase 1 — Foundation**: only governance, specification, and architecture documentation exists.
-There is **no application code, no `src/`, no `tests/`, no Docker/Compose setup, and no
-`CHANGELOG.md` yet**. The first implementation task is also the task that must create the
-`docker-compose.yml` (with `lint` and `test` services), the `src/` and `tests/` trees, and an
-initial `CHANGELOG.md` in Keep a Changelog format — do not assume any of these already exist
-without checking.
+`argus-mind-service` is the adaptive-learning core of Smart App. Three foundation phases are
+complete — governance (`.ai/`, `docs/`, `glossary/`, `adr/`), reusable development assets (`specs/`,
+`skills/`, `prompts/`, `templates/`, `testing/`), and the automation layer's specification
+(`automation/`, `.github/`). There is still **no application code, no `src/`, no `tests/`, no
+Docker/Compose setup, and no `CHANGELOG.md` yet** — everything so far is markdown, including the CI
+workflows under `automation/github-actions/` and `automation/workflows/`, which are precise
+specifications, not runnable `.yml` files (`automation/README.md` explains why). The first
+implementation task is also the task that must create the actual `docker-compose.yml` (with `lint`
+and `test` services, per `skills/docker.md`), the `src/` and `tests/` trees, the real
+`.github/workflows/*.yml` translated from `automation/github-actions/*.md`, and an initial
+`CHANGELOG.md` in Keep a Changelog format — do not assume any of these already exist without
+checking.
 
 ## Commands
 
@@ -98,3 +103,49 @@ and `.ai/coding-philosophy.md`.
 Key reference docs, in the order a new task typically needs them: `.ai/constitution.md` →
 `.ai/architecture.md` → `glossary/README.md` → relevant `adr/ADR-*.md` →
 `.ai/coding-philosophy.md` → `.ai/definition-of-done.md` / `.ai/review-checklist.md`.
+
+## Reusable Development Assets (Phase 2)
+
+Before implementing anything, check whether a reusable asset already covers it — these exist
+specifically so an implementation task doesn't re-derive conventions from scratch:
+
+- `specs/` — feature specifications (`specs/template.md`'s shape: Business Context, Goals,
+  Requirements, Acceptance Criteria, Sequence/State Diagrams, API, Events, Database, Risks, Future
+  Work, Definition of Done). Eight worked examples already exist, one per Engine plus Authentication,
+  Study Session, and Student Progress.
+- `skills/` — per-technology conventions (`python.md`, `fastapi.md`, `postgres.md`, `docker.md`,
+  `github-actions.md`, `clean-architecture.md`, `ddd.md`, `testing.md`, `prompt-engineering.md`,
+  `architecture.md`, `flutter.md`). Read the relevant one before writing code in that area.
+- `prompts/` — ready-to-use prompts for common tasks (`implement-feature.md`,
+  `generate-specification.md`, `review-code.md`, `create-adr.md`, and others) — each states exactly
+  which docs to load as context.
+- `templates/` — lightweight templates for planning artifacts (feature, epic, RFC, spike, bug, task,
+  decision, release, meeting notes); see `templates/README.md` for how to choose between
+  `decision.md`, `rfc.md`, and a full ADR.
+- `testing/` — the testing strategy: unit, integration (including contract tests), architecture
+  tests, golden dataset, prompt evaluation, regression. `testing/architecture-testing.md`
+  specifically enumerates every rule that must be mechanically enforced, not just reviewed by eye.
+
+## Automation Layer (Phase 3)
+
+`automation/` specifies — but does not yet implement — the CI/CD and quality-gate layer:
+
+- `automation/github-actions/` — 15 required/advisory CI workflow specs (lint, tests, coverage,
+  docker build, dependency/secret scanning, architecture/spec validation, spec drift, dead code,
+  unused dependencies, versioning, release, deploy, documentation).
+- `automation/quality-gates.md` — the actual numeric thresholds (coverage floors, complexity limits,
+  etc.) those workflows enforce.
+- `automation/ai-automation/` — prompt evaluation, golden dataset validation, LLM cost monitoring,
+  prompt regression, and Knowledge Graph validation workflows.
+- `automation/cicd/` — environment topology (Local/Development/Staging/Production), Blue-Green
+  deploys, rollback (which never touches Evidence/Learning State — ADR-003, ADR-004), and the
+  versioning/tag scheme.
+- `automation/documentation-automation/` — workflows that keep `adr/README.md`, `glossary/README.md`,
+  and `specs/README.md`'s index tables mechanically in sync with their source files.
+- `.github/PULL_REQUEST_TEMPLATE.md` and `.github/ISSUE_TEMPLATE/*.md` **are** real, functional
+  GitHub artifacts already (unlike the workflow specs, a template's markdown *is* its
+  implementation).
+
+When implementation begins, translating an `automation/github-actions/*.md` spec into a real
+`.github/workflows/*.yml` file is a mechanical task — the spec already states trigger, steps, gate,
+secrets, and failure behavior precisely enough to implement from directly.
