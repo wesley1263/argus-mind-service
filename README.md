@@ -27,8 +27,26 @@ flowchart LR
     class IE,KE,EE,LSE,GE engine
 ```
 
+| Engine | Responsibility |
+|---|---|
+| **Ingestion Engine** | Turns a raw Document into structured Chapters and Topics. |
+| **Knowledge Engine** | Turns structured material into a Knowledge Graph of Learning Nodes. |
+| **Evidence Engine** | Captures what a Student actually did during a Session, as fact. |
+| **Learning State Engine** | Derives what a Student currently knows, from their Evidence. |
+| **Generation Engine** | Decides and produces the next right piece of content, gated by Validation. |
+
 Read the full story in [`docs/vision.md`](docs/vision.md) and
 [`docs/architecture-overview.md`](docs/architecture-overview.md).
+
+## Table of Contents
+
+- [Repository Status](#repository-status)
+- [Repository Layout](#repository-layout)
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+- [The Governance Layer](#the-governance-layer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Repository Status
 
@@ -38,7 +56,39 @@ no business logic yet — see [`docs/repository-structure.md`](docs/repository-s
 exactly what exists today versus what is planned for the implementation phase, and why that order
 matters for a codebase built largely by AI coding agents across many sessions.
 
-## Start Here
+## Repository Layout
+
+```
+argus-mind-service/
+├── .ai/         Binding rules for humans and AI agents: constitution, architecture,
+│                 coding philosophy, development process, review checklist, definition of done.
+├── docs/        Human-facing documentation: vision, architecture overview, workflow, structure.
+├── glossary/    The ubiquitous language — one precise definition per business term.
+├── adr/         Architecture Decision Records — why irreversible decisions were made.
+├── src/         (planned) Application code, once the implementation phase begins.
+├── tests/       (planned) Unit, integration, and contract tests.
+├── pyproject.toml
+└── README.md    This file.
+```
+
+See [`docs/repository-structure.md`](docs/repository-structure.md) for the full tree, an
+explanation of every folder, and the planned internal shape of each Engine.
+
+## Getting Started
+
+- **Prerequisites:** Python `>=3.14`, [Poetry](https://python-poetry.org/) for dependency
+  management.
+- **Setup:**
+
+  ```bash
+  poetry install
+  ```
+
+There is nothing to run yet — no dependencies are declared and no application code exists (see
+[Repository Status](#repository-status)). This section will grow real run/test commands once the
+implementation phase begins.
+
+## Documentation
 
 | If you want to… | Go to |
 |---|---|
@@ -61,9 +111,23 @@ matters for a codebase built largely by AI coding agents across many sessions.
 If any of the above ever disagree with each other, `.ai/` is canonical — each `docs/` page says so
 explicitly at the top.
 
+## Contributing
+
+Every change follows the same lifecycle: **Spec → (ADR, if irreversible or cross-Engine) → Plan →
+Implement → Definition of Done → Review → Merge.** Read
+[`docs/development-workflow.md`](docs/development-workflow.md) before opening a change, and check
+your work against [`.ai/definition-of-done.md`](.ai/definition-of-done.md) before requesting
+review. Reviewers use [`.ai/review-checklist.md`](.ai/review-checklist.md).
+
+The non-negotiable rules behind all of this — Engine boundaries, the ubiquitous language, the
+Evidence/Validation guarantees — are in [`.ai/constitution.md`](.ai/constitution.md).
+
 ## Project
 
 - **Language / tooling:** Python (`>=3.14`), managed with Poetry — see `pyproject.toml`. No
   dependencies are declared yet; none will be added until a spec requires them.
-- **License / stack details:** not yet decided — tracked as future ADRs when they become concrete
-  decisions rather than speculative ones.
+
+## License
+
+Not yet decided — tracked as a future ADR once it becomes a concrete decision rather than a
+speculative one.
