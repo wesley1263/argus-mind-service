@@ -1,163 +1,41 @@
 # argus-mind-service
 
-`argus-mind-service` is the adaptive-learning core of **Smart App**. It is not a feature of the
-product — it is the "mind" the rest of the product is built around: the part that models what a
-Student knows, honestly, and decides what they should encounter next.
+The adaptive-learning backend for Smart App. See `PROJECT.md` for what it is and why.
 
-Smart App is not an AI education app. The AI used inside it is a replaceable implementation detail.
-The durable product is the **methodology** — five Engines and the contracts between them, forming a
-closed loop from raw source material to Validated, personalized content:
+## Status
 
-```mermaid
-flowchart LR
-    DOC[Document] --> IE[Ingestion Engine]
-    IE -->|Chapter, Topic| KE[Knowledge Engine]
-    KE -->|Knowledge Graph| LSE[Learning State Engine]
-    KE -->|Knowledge Graph| GE[Generation Engine]
-
-    STU((Student)) -->|participates in| SESS[Session]
-    SESS --> EE[Evidence Engine]
-    EE -->|Evidence| LSE
-    LSE -->|Learning State, Confidence| GE
-    GE -->|Generation Task| VAL{Validation}
-    VAL -->|passed| SESS
-    VAL -->|failed| GE
-
-    classDef engine fill:#3b5bdb,stroke:#1c2c66,color:#fff
-    class IE,KE,EE,LSE,GE engine
-```
-
-| Engine | Responsibility |
-|---|---|
-| **Ingestion Engine** | Turns a raw Document into structured Chapters and Topics. |
-| **Knowledge Engine** | Turns structured material into a Knowledge Graph of Learning Nodes. |
-| **Evidence Engine** | Captures what a Student actually did during a Session, as fact. |
-| **Learning State Engine** | Derives what a Student currently knows, from their Evidence. |
-| **Generation Engine** | Decides and produces the next right piece of content, gated by Validation. |
-
-Read the full story in [`docs/vision.md`](docs/vision.md) and
-[`docs/architecture-overview.md`](docs/architecture-overview.md).
-
-## Table of Contents
-
-- [Repository Status](#repository-status)
-- [Repository Layout](#repository-layout)
-- [Getting Started](#getting-started)
-- [Documentation](#documentation)
-- [The Governance Layer](#the-governance-layer)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Repository Status
-
-This repository has completed four foundation phases — governance (**Phase 1**), reusable
-development assets (**Phase 2**), the automation layer's specification (**Phase 3**), and the
-domain knowledge base (**Phase 4**). There is still deliberately **no application code, no API, and
-no business logic**: every deliverable so far is markdown — specs, skills, prompts, templates,
-workflow specifications, and the learning-science/domain-model knowledge base an implementation
-phase will build from. See [`docs/repository-structure.md`](docs/repository-structure.md) for
-exactly what exists today versus what's planned, and why that order matters for a codebase built
-largely by AI coding agents across many sessions.
+No application code yet — this repo currently holds only the specs, decisions, and conventions
+needed to build it. See `tasks/backlog.md` for what's planned and `tasks/sprint-001.md` for the
+approved plan for the first sprint (Document Ingestion).
 
 ## Repository Layout
 
 ```
 argus-mind-service/
-├── .ai/            Binding rules for humans and AI agents: constitution, architecture,
-│                    coding philosophy, development process, review checklist, definition of done.
-├── docs/           Human-facing documentation, including domain/, pedagogy/, domain-model/,
-│                    domain-rules/, prompt-engineering/, golden-dataset/, evaluation/, future/.
-├── glossary/       The ubiquitous language — one precise definition per business term.
-├── adr/            Architecture Decision Records — why irreversible decisions were made.
-├── specs/          Feature specifications, following a fixed template.
-├── skills/         How development should happen, per technology/discipline.
-├── prompts/        Reusable, ready-to-use prompts for common tasks.
-├── templates/      Lightweight templates for planning artifacts.
-├── testing/        The testing strategy — unit through prompt evaluation.
-├── automation/     Specifications for CI, quality gates, and the deployment pipeline.
-├── .github/        Real, functional PR and issue templates.
-├── src/            (planned) Application code, once the implementation phase begins.
-├── tests/          (planned) Unit, integration, and contract tests.
-├── pyproject.toml
-└── README.md       This file.
+├── CLAUDE.md              Binding rules for anyone (human or agent) working in this repo.
+├── PROJECT.md              What Smart App is, the five Engines, the product principles.
+├── README.md               This file.
+├── .claude/agents/         Subagent roster: architect, backend, reviewer, tester, docs.
+├── specs/                  One spec per feature (NNN-name.md).
+├── adr/                    Why an irreversible/cross-Engine decision was made.
+├── tasks/                  backlog.md, sprint-001.md, doing.md.
+├── memory/                 Coding standards, API conventions, glossary, domain rules, pedagogy.
+├── prompts/                implement-feature.md, review-code.md, generate-tests.md.
+├── .github/                PR and issue templates.
+└── src/                    (planned) Application code.
 ```
-
-See [`docs/repository-structure.md`](docs/repository-structure.md) for the full tree, an
-explanation of every folder, and the planned internal shape of each Engine.
 
 ## Getting Started
 
-- **Prerequisites:** Python `>=3.14`, [Poetry](https://python-poetry.org/) for dependency
-  management.
-- **Setup:**
+- **Prerequisites:** Python `>=3.14`, [Poetry](https://python-poetry.org/).
+- **Setup:** `poetry install`
 
-  ```bash
-  poetry install
-  ```
-
-There is nothing to run yet — no dependencies are declared and no application code exists (see
-[Repository Status](#repository-status)). This section will grow real run/test commands once the
-implementation phase begins.
-
-## Documentation
-
-| If you want to… | Go to |
-|---|---|
-| Understand why this exists | [`docs/vision.md`](docs/vision.md) |
-| Understand how it's structured | [`docs/architecture-overview.md`](docs/architecture-overview.md) |
-| Learn the precise meaning of a term | [`glossary/README.md`](glossary/README.md) |
-| Understand *why* a decision was made | [`adr/README.md`](adr/README.md) |
-| Start a new feature | [`specs/README.md`](specs/README.md) via [`prompts/generate-specification.md`](prompts/generate-specification.md) |
-| Learn a technology's project-specific conventions | [`skills/README.md`](skills/README.md) |
-| See how CI, quality gates, and deployment are specified | [`automation/README.md`](automation/README.md) |
-| Understand *why* the product works the way it does | [`docs/domain/README.md`](docs/domain/README.md) and [`docs/domain-principles.md`](docs/domain-principles.md) |
-| Learn the learning-science principles behind a feature | [`docs/pedagogy/README.md`](docs/pedagogy/README.md) |
-| Design or review a generative prompt | [`docs/prompt-engineering/README.md`](docs/prompt-engineering/README.md) |
-| Make a change | [`docs/development-workflow.md`](docs/development-workflow.md) |
-| Know the rules that bind every change | [`.ai/constitution.md`](.ai/constitution.md) |
-
-## The Governance Layer
-
-- [`.ai/`](.ai) — the binding rules for humans and AI agents alike: constitution, detailed
-  architecture, coding philosophy, development process, review checklist, definition of done.
-- [`docs/`](docs) — the same substance, told for a human getting oriented.
-- [`glossary/`](glossary) — the ubiquitous language: one precise definition per business term, used
-  identically everywhere.
-- [`adr/`](adr) — the record of why the architecture's irreversible decisions were made.
-- [`specs/`](specs), [`skills/`](skills), [`prompts/`](prompts), [`templates/`](templates),
-  [`testing/`](testing) — the reusable development assets (Phase 2) an AI agent or engineer draws on
-  while implementing a spec.
-- [`automation/`](automation), [`.github/`](.github) — the automation layer's specification
-  (Phase 3): every CI workflow, quality gate, and deployment strategy, written as markdown precise
-  enough to implement from directly.
-- [`docs/domain/`](docs/domain), [`docs/pedagogy/`](docs/pedagogy),
-  [`docs/domain-model/`](docs/domain-model), [`docs/domain-rules/`](docs/domain-rules),
-  [`docs/prompt-engineering/`](docs/prompt-engineering), [`docs/golden-dataset/`](docs/golden-dataset),
-  [`docs/evaluation/`](docs/evaluation), [`docs/future/`](docs/future),
-  [`docs/domain-principles.md`](docs/domain-principles.md) — the domain knowledge base (Phase 4):
-  the learning science, domain model, business rules, and prompt design guides behind every Engine.
-
-If any of the above ever disagree with each other, `.ai/` is canonical for engineering rules and
-`docs/domain-principles.md` is canonical for pedagogical ones — each other document says so
-explicitly at the top.
+There's nothing to run yet — no dependencies are declared and no application code exists (see
+Status above). Once `tasks/sprint-001.md` lands, this section gets real run/test commands; until
+then, `CLAUDE.md`'s Commands section is the source of truth for what's available.
 
 ## Contributing
 
-Every change follows the same lifecycle: **Spec → (ADR, if irreversible or cross-Engine) → Plan →
-Implement → Definition of Done → Review → Merge.** Read
-[`docs/development-workflow.md`](docs/development-workflow.md) before opening a change, and check
-your work against [`.ai/definition-of-done.md`](.ai/definition-of-done.md) before requesting
-review. Reviewers use [`.ai/review-checklist.md`](.ai/review-checklist.md).
-
-The non-negotiable rules behind all of this — Engine boundaries, the ubiquitous language, the
-Evidence/Validation guarantees — are in [`.ai/constitution.md`](.ai/constitution.md).
-
-## Project
-
-- **Language / tooling:** Python (`>=3.14`), managed with Poetry — see `pyproject.toml`. No
-  dependencies are declared yet; none will be added until a spec requires them.
-
-## License
-
-Not yet decided — tracked as a future ADR once it becomes a concrete decision rather than a
-speculative one.
+Read `CLAUDE.md` before making any change — it has the mandatory workflow, the subagent roster, and
+the architecture rules that bind every change. Start with the `architect` subagent for anything
+beyond a trivial fix.
