@@ -5,9 +5,8 @@ title: "[RFC] "
 labels: rfc
 ---
 
-<!-- Full field guidance: templates/rfc.md. Distinct from an ADR (adr/template.md), which records a
-decision already made. An accepted RFC on an irreversible/cross-Engine matter graduates into an ADR
-via prompts/create-adr.md. -->
+<!-- Distinct from an ADR (adr/), which records a decision already made. An accepted RFC on an
+irreversible/cross-Engine matter graduates into an ADR. -->
 
 ## Problem
 
@@ -22,12 +21,11 @@ deciding. -->
 
 ## Impact
 
-<!-- Which Engine(s) (.ai/architecture.md §2), whether this implies a contract change or a glossary
-update (.ai/constitution.md Article VI). -->
+<!-- Which Engine(s), whether this implies a contract change or a new glossary term. -->
 
 ## Open Questions
 
 ## Resolution
 
 <!-- Filled in once discussion concludes: what was decided, by whom, and a link to the resulting
-ADR if the decision meets that bar (.ai/development-principles.md §2). -->
+ADR if the decision needs one. -->
