@@ -1,39 +1,31 @@
 # Specifications
 
-This folder holds feature specifications — the artifact that opens the Spec-Driven Development
-lifecycle described in `/.ai/development-principles.md`. Every non-trivial change to this
-repository starts as a spec here before any code is written.
+One spec per feature, numbered in build order. Every non-trivial change starts as a spec here
+before any code is written.
 
-- **[`template.md`](template.md)** — copy this to start a new spec. Every spec must cover Business
-  Context, Goals, Requirements, Acceptance Criteria, Sequence Diagram, State Diagram, API, Events,
-  Database, Risks, Future Work, and Definition of Done.
+- **[`000-template.md`](000-template.md)** — copy this to start a new spec. Every spec covers
+  Business Context, Goals, Requirements, Acceptance Criteria, Sequence Diagram, State Diagram, API,
+  Events, Database, Risks, Future Work, and Definition of Done.
 
-## Example Specifications
-
-These are worked examples showing the template applied to the platform's actual domain — one per
-Engine, one Platform-level capability, and two cross-Engine orchestrations that show how a
-Student-facing feature composes Engine contracts without owning their internals.
+## Specs
 
 | Spec | Scope |
 |---|---|
-| [`authentication.md`](authentication.md) | Platform — identity, not one of the five Engines. |
-| [`document-ingestion.md`](document-ingestion.md) | Ingestion Engine |
-| [`knowledge-engine.md`](knowledge-engine.md) | Knowledge Engine |
-| [`evidence-engine.md`](evidence-engine.md) | Evidence Engine |
-| [`learning-state-engine.md`](learning-state-engine.md) | Learning State Engine |
-| [`generation-engine.md`](generation-engine.md) | Generation Engine |
-| [`study-session.md`](study-session.md) | Cross-Engine — the Adaptive Loop end to end. |
-| [`student-progress.md`](student-progress.md) | Cross-Engine, read-only — a progress view over Learning State and the Knowledge Graph. |
+| [`001-document-ingestion.md`](001-document-ingestion.md) | Ingestion Engine |
+| [`002-knowledge-engine.md`](002-knowledge-engine.md) | Knowledge Engine |
+| [`003-evidence-engine.md`](003-evidence-engine.md) | Evidence Engine |
+| [`004-learning-state-engine.md`](004-learning-state-engine.md) | Learning State Engine |
+| [`005-generation-engine.md`](005-generation-engine.md) | Generation Engine |
+| [`006-study-session.md`](006-study-session.md) | Cross-Engine — the Adaptive Loop end to end |
+| [`007-student-progress.md`](007-student-progress.md) | Cross-Engine, read-only progress view |
+| [`008-authentication.md`](008-authentication.md) | Platform — identity, not one of the five Engines |
 
 ## Writing a New Spec
 
-1. Copy `template.md` to `specs/<kebab-case-name>.md`.
-2. Use only terms already defined in `/glossary/README.md`; add a term there in the same change if
-   one is missing (`.ai/constitution.md` Article VI).
-3. Decide whether the spec needs an ADR (`.ai/development-principles.md` §2) before planning
+1. Copy `000-template.md` to `specs/NNN-kebab-case-name.md` (next sequential number).
+2. Use only terms already in `memory/glossary.md` — add one there in the same change if a term is
+   missing.
+3. Decide whether the spec needs an ADR (see `CLAUDE.md`'s Architecture section) before planning
    implementation.
-4. Follow `docs/development-workflow.md` from here: Plan → Implement → Definition of Done →
-   Review → Merge.
-
-The [`prompts/generate-specification.md`](../prompts/generate-specification.md) prompt automates
-starting a new spec from this template with the right context loaded.
+4. From there: Plan (`architect` subagent) → Implement (`backend`) → Review/Test
+   (`reviewer`/`tester`) → Docs (`docs`) → Merge.
