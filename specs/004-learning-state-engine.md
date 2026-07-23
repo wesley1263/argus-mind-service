@@ -3,8 +3,8 @@
 - **Status:** Draft
 - **Owning Engine(s):** Learning State Engine
 - **Related ADRs:**
-  [ADR-003](../adr/ADR-003-evidence-is-an-immutable-append-only-log.md),
-  [ADR-004](../adr/ADR-004-confidence-is-a-derived-recomputable-projection.md) (both binding on
+  [ADR-003](../adr/ADR-003-evidence-immutable.md),
+  [ADR-004](../adr/ADR-004-confidence-derived.md) (both binding on
   this spec).
 - **Author / Date:** Phase 2 — Development
 

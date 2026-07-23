@@ -2,7 +2,7 @@
 
 - **Status:** Draft
 - **Owning Engine(s):** Ingestion Engine
-- **Related ADRs:** [ADR-002](../adr/ADR-002-chunk-is-an-internal-only-concept.md) (Chunk stays
+- **Related ADRs:** [ADR-002](../adr/ADR-002-chunk-internal-only.md) (Chunk stays
   internal to this Engine — binding on this spec's implementation).
 - **Author / Date:** Phase 2 — Development
 

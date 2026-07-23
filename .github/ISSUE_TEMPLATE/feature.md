@@ -5,13 +5,12 @@ title: "[Feature] "
 labels: feature
 ---
 
-<!-- Full field guidance: templates/feature.md. This is the intake form — once prioritized, use
-prompts/generate-specification.md to turn it into a real spec under specs/. -->
+<!-- This is the intake form — once prioritized, use the `architect` subagent to turn it into a
+real spec under specs/. -->
 
 ## Owning Engine(s) (best guess)
 
-<!-- Ingestion, Knowledge, Evidence, Learning State, Generation, Platform, or Cross-Engine —
-see .ai/architecture.md §2. -->
+<!-- Ingestion, Knowledge, Evidence, Learning State, Generation, Platform, or Cross-Engine. -->
 
 ## Problem
 

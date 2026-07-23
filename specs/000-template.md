@@ -108,7 +108,7 @@ callable endpoint. State the shape, not the implementation. Follow the conventio
 *Anything this spec publishes or consumes on the platform's event stream, if any. Event names use
 glossary terms in past tense (`EvidenceRecorded`, not `RecordEvidence`) — an event describes
 something that already happened, consistent with Evidence being immutable fact
-(`CLAUDE.md` Article IV).*
+(`CLAUDE.md`'s Evidence-is-truth rule).*
 
 | Event | Producer | Consumers | Payload (key fields) |
 |---|---|---|---|

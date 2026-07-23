@@ -3,7 +3,7 @@
 - **Status:** Draft
 - **Owning Engine(s):** Generation Engine
 - **Related ADRs:**
-  [ADR-005](../adr/ADR-005-generation-output-must-pass-validation-gate.md) (binding: no output
+  [ADR-005](../adr/ADR-005-validation-gate.md) (binding: no output
   reaches a Student without passing Validation).
 - **Author / Date:** Phase 2 — Development
 
@@ -24,7 +24,7 @@ applies to it so strictly.
 4. On a Validation failure, retry or fall back — never deliver unvalidated content.
 
 **Non-goals:** the specific generative technique/model used to produce content (swappable per
-Article I), defining every Validation check for every content type (tracked per content type as
+`PROJECT.md`), defining every Validation check for every content type (tracked per content type as
 Future Work, per ADR-005).
 
 ## Requirements

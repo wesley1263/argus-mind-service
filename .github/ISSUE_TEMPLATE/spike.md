@@ -5,8 +5,6 @@ title: "[Spike] "
 labels: spike
 ---
 
-<!-- Full field guidance: templates/spike.md -->
-
 ## Question to Answer
 
 ## Timebox
@@ -32,6 +30,6 @@ part is intended to be kept. -->
 
 ## Follow-up
 
-- [ ] Promote to a spec (`prompts/generate-specification.md`)
-- [ ] Needs an ADR (`prompts/create-adr.md`)
+- [ ] Promote to a spec under `specs/`
+- [ ] Needs an ADR under `adr/`
 - [ ] Dead end — documented here so it isn't re-attempted without this context

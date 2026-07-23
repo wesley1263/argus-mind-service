@@ -5,8 +5,6 @@ title: "[Epic] "
 labels: epic
 ---
 
-<!-- Full field guidance: templates/epic.md -->
-
 ## Goal
 
 <!-- The outcome this epic exists to deliver, at the level a stakeholder would recognize — not a
@@ -22,7 +20,7 @@ list of features. -->
 
 | Spec | Status | Owning Engine(s) |
 |---|---|---|
-| `specs/<name>.md` | Draft / Approved / In Progress / Implemented | |
+| `specs/NNN-name.md` | Draft / Approved / In Progress / Implemented | |
 
 ## Success Metrics
 

@@ -2,7 +2,7 @@
 
 - **Status:** Draft
 - **Owning Engine(s):** Knowledge Engine
-- **Related ADRs:** [ADR-002](../adr/ADR-002-chunk-is-an-internal-only-concept.md) (this Engine
+- **Related ADRs:** [ADR-002](../adr/ADR-002-chunk-internal-only.md) (this Engine
   consumes Topic-level input only — never Chunk).
 - **Author / Date:** Phase 2 — Development
 

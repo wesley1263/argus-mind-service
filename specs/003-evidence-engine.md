@@ -2,7 +2,7 @@
 
 - **Status:** Draft
 - **Owning Engine(s):** Evidence Engine
-- **Related ADRs:** [ADR-003](../adr/ADR-003-evidence-is-an-immutable-append-only-log.md)
+- **Related ADRs:** [ADR-003](../adr/ADR-003-evidence-immutable.md)
   (binding: every write here is append-only).
 - **Author / Date:** Phase 2 — Development
 
